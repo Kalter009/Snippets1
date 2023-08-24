@@ -32,6 +32,7 @@
                 </tr>
                 </thead>
                 <tbody>
+                    {% block my_snippets %}
                     {% for snippet in snippets %}
                     <tr>
                         <td scope="row">{{ snippet.id }}</td>
@@ -47,6 +48,7 @@
                         <td>{{ snippet.user.username }}</td>
                     </tr>
                     {% endfor %}
+                    {% endblock %}
                 </tbody>
             </table>
             <div align="right">

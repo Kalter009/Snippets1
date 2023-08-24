@@ -34,7 +34,7 @@ def add_snippet_page(request):
         return render(request,'pages/add_snippet.html', {'form': form})
 
 def snippets_page(request):
-    snippets = Snippet.objects.all()
+    snippets = Snippet.objects.filter(mode='pu')
     context = {
         'pagename': 'Просмотр сниппетов',
         'snippets': snippets
@@ -106,7 +106,18 @@ def logout(request):
     auth.logout(request)
     return redirect(request.META.get("HTTP_REFERER", '/'))
 
-# def create_snippet(request):
+def my_snippets(request):
+    if request.user.is_authenticated:
+        snippets = Snippet.objects.filter(user = request.user)
+        context = {
+            'pagename': 'My snippets',
+            'snippets': snippets
+        }
+        return render(request, 'pages/view_my_snippets.html', context)
+    else:
+        return redirect('home')
+
+# def create_snippet(request)
 #     if request.method == "POST":
 #         form = SnippetForm(request.POST)
 #         if form.is_valid():
