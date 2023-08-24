@@ -37,7 +37,8 @@ def snippets_page(request):
     snippets = Snippet.objects.filter(mode='pu')
     context = {
         'pagename': 'Просмотр сниппетов',
-        'snippets': snippets
+        'snippets': snippets,
+        'user': request.user
         }
     return render(request, 'pages/view_snippets.html', context)
 
@@ -54,13 +55,14 @@ def snippet_detail(request, snippet_id):
         }
     return render(request, 'pages/snippet_detail.html', context)
 
-
+@login_required
 def snippet_delete(request, snippet_id):
     snippet = Snippet.objects.get(id=snippet_id)
     snippet.delete()
     # Перенаправление на ту страницу, с которой пришел
     return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
+@login_required
 def snippet_edit(request, snippet_id):
     try:
         snippet = Snippet.objects.get(id=snippet_id)
