@@ -1,4 +1,4 @@
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 from MainApp.models import Snippet
 from MainApp.forms import SnippetForm, UserRegistrationForm
@@ -39,7 +39,8 @@ def snippets_page(request):
     context = {
         'pagename': 'Просмотр сниппетов',
         'snippets': snippets,
-        'user': request.user
+        'user': request.user,
+        'count': Snippet.objects.filter(mode='Public').count()
         }
     return render(request, 'pages/view_snippets.html', context)
 
@@ -130,11 +131,13 @@ def my_snippets(request):
         snippets = Snippet.objects.filter(user = request.user)
         context = {
             'pagename': 'My snippets',
-            'snippets': snippets
+            'snippets': snippets,
+            'count': Snippet.objects.filter(user = request.user).count()
         }
         return render(request, 'pages/view_my_snippets.html', context)
     else:
         return redirect('home')
+    
 
 # def create_snippet(request)
 #     if request.method == "POST":

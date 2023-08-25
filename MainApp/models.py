@@ -13,6 +13,8 @@ SNIPPET_MODE = (
 )
 
 class Snippet(models.Model):
+    class META:
+        ordering = ['name', 'lang']
     name = models.CharField(max_length=100)
     lang = models.CharField(max_length=30, choices=LANGS)
     code = models.TextField(max_length=5000)
